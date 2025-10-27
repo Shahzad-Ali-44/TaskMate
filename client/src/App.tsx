@@ -328,7 +328,7 @@ function AppContent() {
       if (response.success) {
         const tasksWithStatus: Task[] = response.data.tasks.map((todo: Todo) => ({
           ...todo,
-          status: todo.isComplete ? 'completed' : 'pending' as TaskStatus
+          status: todo.status as TaskStatus
         }))
         setTasks(tasksWithStatus)
       }
@@ -447,7 +447,7 @@ function AppContent() {
         )
         setTasks(newTasks)
 
-        apiClient.updateTask(activeId, { isComplete: newStatus === 'completed' })
+        apiClient.updateTask(activeId, { status: newStatus })
           .then(() => {
             toast.success(`Task moved to ${newStatus}!`)
           })
@@ -475,7 +475,7 @@ function AppContent() {
         )
         setTasks(newTasks)
 
-        apiClient.updateTask(activeId, { isComplete: overTask.status === 'completed' })
+        apiClient.updateTask(activeId, { status: overTask.status })
           .then(() => {
             toast.success(`Task moved to ${overTask.status}!`)
           })

@@ -7,6 +7,11 @@ const taskSchema = new mongoose.Schema({
     trim: true,
     maxlength: [200, 'Task title cannot exceed 200 characters']
   },
+  status: {
+    type: String,
+    enum: ['pending', 'ongoing', 'completed'],
+    default: 'pending'
+  },
   isComplete: {
     type: Boolean,
     default: false

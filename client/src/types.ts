@@ -2,6 +2,7 @@ export interface Todo {
     _id: string
     title: string
     isComplete: boolean
+    status: 'pending' | 'ongoing' | 'completed'
     userId: string
     createdAt: string
     updatedAt: string

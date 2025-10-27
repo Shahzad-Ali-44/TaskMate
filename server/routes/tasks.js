@@ -71,7 +71,7 @@ router.post('/', protect, async (req, res) => {
 router.put('/:id', protect, async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, isComplete } = req.body;
+    const { title, isComplete, status } = req.body;
 
     if (!id.match(/^[0-9a-fA-F]{24}$/)) {
       return res.status(400).json({
@@ -104,8 +104,24 @@ router.put('/:id', protect, async (req, res) => {
       task.title = title.trim();
     }
 
+    if (status !== undefined) {
+      if (!['pending', 'ongoing', 'completed'].includes(status)) {
+        return res.status(400).json({
+          success: false,
+          message: 'Invalid status. Must be pending, ongoing, or completed'
+        });
+      }
+      task.status = status;
+      task.isComplete = status === 'completed';
+    }
+
     if (isComplete !== undefined) {
       task.isComplete = Boolean(isComplete);
+      if (task.isComplete) {
+        task.status = 'completed';
+      } else if (task.status === 'completed') {
+        task.status = 'pending';
+      }
     }
 
     await task.save();

@@ -101,7 +101,7 @@ class ApiClient {
     });
   }
 
-  async updateTask(taskId: string, updates: { title?: string; isComplete?: boolean }) {
+  async updateTask(taskId: string, updates: { title?: string; isComplete?: boolean; status?: 'pending' | 'ongoing' | 'completed' }) {
     return this.request(`/api/tasks/${taskId}`, {
       method: 'PUT',
       body: JSON.stringify(updates),
