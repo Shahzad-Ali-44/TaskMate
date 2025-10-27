@@ -3,8 +3,9 @@ import { useAuth } from '../../contexts/AuthContext.tsx'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card'
-import { ArrowLeft, Mail, Lock, Eye, EyeOff, CheckCircle } from 'lucide-react'
+import { ArrowLeft, Mail, Lock, Eye, EyeOff } from 'lucide-react'
 import toast from 'react-hot-toast'
+import { ThemeToggle } from '../../components/theme-toggle'
 
 interface ForgotPasswordFormProps {
   onBackToLogin: () => void
@@ -86,14 +87,16 @@ export function ForgotPasswordForm({ onBackToLogin }: ForgotPasswordFormProps) {
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] dark:bg-grid-slate-700/25" />
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center p-4">
+      <div className="absolute top-4 right-4 z-20">
+        <ThemeToggle />
+      </div>
       
       <div className="relative z-10 w-full max-w-md">
-        <Card className={`bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border-0 shadow-xl ${step === 'reset' ? 'gap-' : ''}`}>
+        <Card className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-sm">
           <CardHeader className={`text-center ${step === 'reset' ? 'pb-0' : 'pb-4'}`}>
-            <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
-              {step === 'reset' ? <CheckCircle className="w-8 h-8 text-white" /> : <Mail className="w-8 h-8 text-white" />}
+            <div className="w-20 h-20 flex items-center justify-center mx-auto mb-4">
+              <img src="/favicon.ico" alt="TaskMate Logo" className="w-12 h-12" />
             </div>
             <CardTitle className="text-2xl font-bold text-slate-900 dark:text-white">
               {step === 'reset' ? 'Reset Your Password' : 'Forgot Password?'}
@@ -139,7 +142,7 @@ export function ForgotPasswordForm({ onBackToLogin }: ForgotPasswordFormProps) {
                   <Button
                     type="submit"
                     disabled={loading || !email.trim()}
-                    className="w-full h-12 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
+                    className="w-full h-12 bg-blue-500 hover:bg-blue-600 text-white font-semibold shadow-sm hover:shadow-md transition-all duration-200"
                   >
                     {loading ? (
                       <div className="flex items-center space-x-2">
@@ -155,9 +158,9 @@ export function ForgotPasswordForm({ onBackToLogin }: ForgotPasswordFormProps) {
                     type="button"
                     onClick={onBackToLogin}
                     variant="ghost"
-                    className="w-full h-12 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                    className="w-full h-12 text-slate-600 dark:text-slate-400 hover:text-slate-700 dark:hover:text-blue-400 hover:bg-transparent cursor-pointer"
                   >
-                    <ArrowLeft className="w-4 h-4 mr-2" />
+                    <ArrowLeft className="w-4 h-4" />
                     Back to Sign In
                   </Button>
                 </div>
@@ -228,7 +231,7 @@ export function ForgotPasswordForm({ onBackToLogin }: ForgotPasswordFormProps) {
                   <Button
                     type="submit"
                     disabled={loading || !newPassword.trim() || !confirmPassword.trim()}
-                    className="w-full h-12 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
+                    className="w-full h-12 bg-green-500 hover:bg-green-600 text-white font-semibold shadow-sm hover:shadow-md transition-all duration-200"
                   >
                     {loading ? (
                       <div className="flex items-center space-x-2">

@@ -504,8 +504,8 @@ function AppContent() {
         <div className="container mx-auto px-4 py-4 max-w-7xl">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 space-y-4 sm:space-y-0 bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
             <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center shadow-sm">
-                <User className="w-6 h-6 text-white" />
+              <div className="w-16 h-16 flex items-center justify-center">
+                <img src="/favicon.ico" alt="TaskMate Logo" className="w-10 h-10" />
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-slate-900 dark:text-white">TaskMate</h1>

@@ -75,23 +75,21 @@ export function LoginForm({ onSwitchToSignup, onLoginSuccess, onForgotPassword }
           },
         }}
       />
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center p-4 transition-colors duration-200">
-        <div className="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] dark:bg-grid-slate-700/25 transition-opacity duration-200" />
-        
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center p-4">
         <div className="absolute top-4 right-4 z-20">
           <ThemeToggle />
         </div>
         
         <div className="relative z-10 w-full max-w-md">
-        <Card className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border-0 shadow-2xl transition-all duration-200">
+        <Card className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-sm">
           <CardHeader className="text-center">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full mb-4 shadow-xl">
-              <Target className="w-8 h-8 text-white" />
+            <div className="inline-flex items-center justify-center w-20 h-20 mb-4">
+              <img src="/favicon.ico" alt="TaskMate Logo" className="w-12 h-12" />
             </div>
-            <CardTitle className="text-2xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-200 bg-clip-text text-transparent">
+            <CardTitle className="text-2xl font-bold text-slate-900 dark:text-white">
               Welcome Back
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-slate-600 dark:text-slate-400">
               Sign in to your TaskMate account
             </CardDescription>
           </CardHeader>
@@ -154,7 +152,7 @@ export function LoginForm({ onSwitchToSignup, onLoginSuccess, onForgotPassword }
               <Button
                 type="submit"
                 disabled={loading}
-                className="w-full h-12 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
+                className="w-full h-12 bg-blue-500 hover:bg-blue-600 text-white font-semibold shadow-sm hover:shadow-md transition-all duration-200"
               >
                 {loading ? (
                   <div className="flex items-center space-x-2">
@@ -167,21 +165,21 @@ export function LoginForm({ onSwitchToSignup, onLoginSuccess, onForgotPassword }
               </Button>
             </form>
 
-            <div className="mt-6 space-y-3 text-center">
+            <div className="mt-6 space-y-4 text-center">
               <p className="text-sm text-slate-600 dark:text-slate-400">
                 Don't have an account?{' '}
                 <button
                   onClick={onSwitchToSignup}
-                  className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium transition-colors"
+                  className="text-slate-600 dark:text-blue-400 hover:text-slate-700 dark:hover:text-blue-300 font-medium transition-colors cursor-pointer"
                 >
                   Sign up
                 </button>
               </p>
               
-              <div className="border-t border-slate-200 dark:border-slate-700 pt-3">
+              <div className="border-t border-slate-200 dark:border-slate-700 pt-4 pb-2">
                 <button
                   onClick={onForgotPassword}
-                  className="text-sm text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors"
+                  className="text-sm text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-blue-400 font-medium transition-colors cursor-pointer"
                 >
                   Forgot your password?
                 </button>
