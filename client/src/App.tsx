@@ -382,7 +382,7 @@ function AppContent() {
             duration: 4000
           })
         } else {
-          toast.success(isComplete ? 'Task marked as incomplete 🔄' : 'Task completed!')
+          toast.success(isComplete ? 'Task marked as incomplete' : 'Task completed!')
         }
       }
     } catch (error) {
@@ -396,7 +396,7 @@ function AppContent() {
       const response = await apiClient.deleteTask(id)
       if (response.success) {
         setTasks(tasks.filter(task => task._id !== id))
-        toast.success('Task deleted successfully! 🗑️')
+        toast.success('Task deleted successfully!')
       }
     } catch (error) {
       console.error('Delete error:', error)
