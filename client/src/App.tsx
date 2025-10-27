@@ -7,8 +7,9 @@ import { Button } from './components/ui/button'
 import { Input } from './components/ui/input'
 import { Card, CardContent, CardHeader, CardTitle } from './components/ui/card'
 import { Badge } from './components/ui/badge'
-import { CheckCircle2, Plus, Trash2, TrendingUp, Zap, LogOut, User, Circle, Play, Search, Star } from 'lucide-react'
+import { CheckCircle2, Plus, Trash2, TrendingUp, Zap, LogOut, Circle, Play, Search, Star } from 'lucide-react'
 import { ThemeToggle } from './components/theme-toggle'
+import { Footer } from './components/Footer'
 import { LoginForm } from './components/auth/LoginForm'
 import { SignupForm } from './components/auth/SignupForm'
 import { ForgotPasswordForm } from './components/auth/ForgotPasswordForm'
@@ -40,10 +41,13 @@ interface Task extends Todo {
   priority?: TaskPriority
   dueDate?: string
 }
-function SortableTaskItem({ task, onToggle, onDelete }: { 
+function SortableTaskItem({ task, onToggle, onDelete, overId, activeId, allTasks }: { 
   task: Task
   onToggle: (id: string, isComplete: boolean) => void
   onDelete: (id: string) => void
+  overId: string | null
+  activeId: string | null
+  allTasks: Task[]
 }) {
   const {
     attributes,
@@ -62,9 +66,9 @@ function SortableTaskItem({ task, onToggle, onDelete }: {
 
   const getStatusColor = () => {
     switch (task.status) {
-      case 'pending': return 'border-l-slate-400'
-      case 'ongoing': return 'border-l-blue-500'
-      case 'completed': return 'border-l-green-500'
+      case 'pending': return 'border-l-slate-400 dark:border-l-slate-500'
+      case 'ongoing': return 'border-l-blue-500 dark:border-l-blue-400'
+      case 'completed': return 'border-l-green-500 dark:border-l-green-400'
     }
   }
 
@@ -86,15 +90,35 @@ function SortableTaskItem({ task, onToggle, onDelete }: {
     }
   }
 
+  const isShowingPreview = overId === task._id && activeId && activeId !== task._id
+  const draggedTask = activeId ? allTasks.find(t => t._id === activeId) : null
+
   return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      {...attributes}
-      {...listeners}
-      className={`bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 ${getStatusColor()} border-l-4 rounded-lg p-4 mb-3 cursor-grab active:cursor-grabbing select-none transition-all duration-200 hover:shadow-sm active:scale-[0.98]`}
-    >
-      <div className="flex items-center space-x-3">
+    <>
+      {isShowingPreview && draggedTask && (
+        <div className="bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-lg p-4 mb-3 opacity-60">
+          <div className="flex items-center space-x-3">
+            <div className="w-9 h-9 rounded-full bg-slate-200 dark:bg-slate-600 flex items-center justify-center">
+              <div className="w-4 h-4 rounded-full border-2 border-slate-400"></div>
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium text-slate-600 dark:text-slate-400 truncate">
+                {draggedTask.title}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+      <div
+        ref={setNodeRef}
+        style={style}
+        {...attributes}
+        {...listeners}
+        className={`bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 ${getStatusColor()} border-l-4 rounded-lg p-4 mb-3 cursor-grab active:cursor-grabbing select-none transition-all duration-200 hover:shadow-sm active:scale-[0.98] ${
+          isDragging ? 'opacity-50' : ''
+        }`}
+      >
+        <div className="flex items-center space-x-3">
         <Button
           variant="ghost"
           size="sm"
@@ -145,6 +169,7 @@ function SortableTaskItem({ task, onToggle, onDelete }: {
         </Button>
       </div>
     </div>
+    </>
   )
 }
 
@@ -155,7 +180,10 @@ function TaskColumn({
   onToggle, 
   onDelete,
   searchQuery,
-  onSearchChange
+  onSearchChange,
+  overId,
+  activeId,
+  allTasks
 }: { 
   title: string
   tasks: Task[]
@@ -164,6 +192,9 @@ function TaskColumn({
   onDelete: (id: string) => void
   searchQuery: string
   onSearchChange: (query: string) => void
+  overId: string | null
+  activeId: string | null
+  allTasks: Task[]
 }) {
   const { setNodeRef, isOver } = useDroppable({
     id: status,
@@ -218,29 +249,34 @@ function TaskColumn({
         </div>
       </CardHeader>
       <CardContent className="pt-4 pb-4 px-4">
-        <SortableContext items={tasks.map(t => t._id)} strategy={verticalListSortingStrategy}>
-          <div className="min-h-[200px]">
-            {tasks.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-12 text-slate-400 dark:text-slate-500">
-                {status === 'pending' && <Circle className="w-12 h-12 mb-3 opacity-20" />}
-                {status === 'ongoing' && <Play className="w-12 h-12 mb-3 opacity-20" />}
-                {status === 'completed' && <CheckCircle2 className="w-12 h-12 mb-3 opacity-20" />}
-                <p className="text-sm font-medium">
-                  {isOver ? 'Drop task here' : 'No tasks yet'}
-                </p>
-              </div>
-            ) : (
-              tasks.map((task) => (
-                <SortableTaskItem
-                  key={task._id}
-                  task={task}
-                  onToggle={onToggle}
-                  onDelete={onDelete}
-                />
-              ))
-            )}
-          </div>
-        </SortableContext>
+        <div className="h-[300px] overflow-y-auto pr-2">
+          {tasks.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-12 text-slate-400 dark:text-slate-500">
+              {status === 'pending' && <Circle className="w-12 h-12 mb-3 opacity-20" />}
+              {status === 'ongoing' && <Play className="w-12 h-12 mb-3 opacity-20" />}
+              {status === 'completed' && <CheckCircle2 className="w-12 h-12 mb-3 opacity-20" />}
+              <p className="text-sm font-medium">
+                {isOver ? 'Drop task here' : 'No tasks yet'}
+              </p>
+            </div>
+          ) : (
+            <div className="pr-2">
+              <SortableContext items={tasks.map(t => t._id)} strategy={verticalListSortingStrategy}>
+                {tasks.map((task) => (
+                  <SortableTaskItem
+                    key={task._id}
+                    task={task}
+                    onToggle={onToggle}
+                    onDelete={onDelete}
+                    overId={overId}
+                    activeId={activeId}
+                    allTasks={allTasks}
+                  />
+                ))}
+              </SortableContext>
+            </div>
+          )}
+        </div>
       </CardContent>
     </Card>
   )
@@ -254,6 +290,7 @@ function AppContent() {
   const [showLogin, setShowLogin] = useState(true)
   const [showForgotPassword, setShowForgotPassword] = useState(false)
   const [activeId, setActiveId] = useState<string | null>(null)
+  const [overId, setOverId] = useState<string | null>(null)
   const [searchQueries, setSearchQueries] = useState<{
     pending: string
     ongoing: string
@@ -371,9 +408,22 @@ function AppContent() {
     setActiveId(event.active.id as string)
   }
 
+  const handleDragOver = (event: any) => {
+    const { active, over } = event
+    const activeTask = tasks.find(task => task._id === active.id)
+    const overTask = tasks.find(task => task._id === over?.id)
+    
+    if (activeTask && overTask && activeTask.status === overTask.status) {
+      setOverId(over?.id as string | null)
+    } else {
+      setOverId(null)
+    }
+  }
+
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event
     setActiveId(null)
+    setOverId(null)
 
     if (!over) return
 
@@ -383,38 +433,69 @@ function AppContent() {
     const activeTask = tasks.find(task => task._id === activeId)
     if (!activeTask) return
 
-    let newStatus: TaskStatus = activeTask.status
-    
     if (overId === 'pending' || overId === 'ongoing' || overId === 'completed') {
-      newStatus = overId as TaskStatus
-    } else {
-      const overTask = tasks.find(task => task._id === overId)
-      if (overTask) {
-        newStatus = overTask.status
+      const newStatus = overId as TaskStatus
+      if (newStatus !== activeTask.status) {
+        const newTasks = tasks.map(task =>
+          task._id === activeId 
+            ? { 
+                ...task, 
+                status: newStatus,
+                isComplete: newStatus === 'completed'
+              }
+            : task
+        )
+        setTasks(newTasks)
+
+        apiClient.updateTask(activeId, { isComplete: newStatus === 'completed' })
+          .then(() => {
+            toast.success(`Task moved to ${newStatus}!`)
+          })
+          .catch(error => {
+            console.error('Update error:', error)
+            toast.error('Failed to update task status')
+            setTasks(tasks)
+          })
       }
+      return
     }
 
-    if (newStatus !== activeTask.status) {
-      const newTasks = tasks.map(task =>
-        task._id === activeId 
-          ? { 
-              ...task, 
-              status: newStatus,
-              isComplete: newStatus === 'completed'
-            }
-          : task
-      )
-      setTasks(newTasks)
+    const overTask = tasks.find(task => task._id === overId)
+    
+    if (overTask) {
+      if (overTask.status !== activeTask.status) {
+        const newTasks = tasks.map(task =>
+          task._id === activeId 
+            ? { 
+                ...task, 
+                status: overTask.status,
+                isComplete: overTask.status === 'completed'
+              }
+            : task
+        )
+        setTasks(newTasks)
 
-      apiClient.updateTask(activeId, { isComplete: newStatus === 'completed' })
-        .then(() => {
-          toast.success(`Task moved to ${newStatus}!`)
-        })
-        .catch(error => {
-          console.error('Update error:', error)
-          toast.error('Failed to update task status')
-          setTasks(tasks)
-        })
+        apiClient.updateTask(activeId, { isComplete: overTask.status === 'completed' })
+          .then(() => {
+            toast.success(`Task moved to ${overTask.status}!`)
+          })
+          .catch(error => {
+            console.error('Update error:', error)
+            toast.error('Failed to update task status')
+            setTasks(tasks)
+          })
+      } else {
+        const newTasks = [...tasks]
+        const activeIndex = newTasks.findIndex(task => task._id === activeId)
+        const overIndex = newTasks.findIndex(task => task._id === overId)
+        
+        if (activeIndex !== overIndex) {
+          const [removed] = newTasks.splice(activeIndex, 1)
+          newTasks.splice(overIndex, 0, removed)
+          setTasks(newTasks)
+          toast.success('Task reordered!')
+        }
+      }
     }
   }
 
@@ -632,6 +713,7 @@ function AppContent() {
           <DndContext
             sensors={sensors}
             onDragStart={handleDragStart}
+            onDragOver={handleDragOver}
             onDragEnd={handleDragEnd}
           >
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -643,6 +725,9 @@ function AppContent() {
                 onDelete={deleteTask}
                 searchQuery={searchQueries.pending}
                 onSearchChange={(query) => setSearchQueries(prev => ({ ...prev, pending: query }))}
+                overId={overId}
+                activeId={activeId}
+                allTasks={tasks}
               />
               <TaskColumn
                 title="Ongoing"
@@ -652,6 +737,9 @@ function AppContent() {
                 onDelete={deleteTask}
                 searchQuery={searchQueries.ongoing}
                 onSearchChange={(query) => setSearchQueries(prev => ({ ...prev, ongoing: query }))}
+                overId={overId}
+                activeId={activeId}
+                allTasks={tasks}
               />
               <TaskColumn
                 title="Completed"
@@ -661,18 +749,31 @@ function AppContent() {
                 onDelete={deleteTask}
                 searchQuery={searchQueries.completed}
                 onSearchChange={(query) => setSearchQueries(prev => ({ ...prev, completed: query }))}
+                overId={overId}
+                activeId={activeId}
+                allTasks={tasks}
               />
             </div>
             
-            <DragOverlay>
-              {activeId ? (
-                <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-4 shadow-lg">
+      <DragOverlay>
+        {activeId ? (
+          <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-4 shadow-lg">
+            <div className="flex items-center space-x-3">
+              <div className="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center">
+                <div className="w-4 h-4 rounded-full border-2 border-slate-300 dark:border-slate-600"></div>
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-slate-900 dark:text-white truncate">
                   {tasks.find(t => t._id === activeId)?.title}
-                </div>
-              ) : null}
-            </DragOverlay>
+                </p>
+              </div>
+            </div>
+          </div>
+        ) : null}
+      </DragOverlay>
           </DndContext>
         </div>
+        <Footer />
       </div>
     </>
   )

@@ -3,9 +3,10 @@ import { useAuth } from '../../contexts/AuthContext.tsx'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card'
-import { Target, Mail, Lock, Eye, EyeOff, User } from 'lucide-react'
+import { Mail, Lock, Eye, EyeOff, User } from 'lucide-react'
 import toast, { Toaster } from 'react-hot-toast'
 import { ThemeToggle } from '../../components/theme-toggle'
+import { Footer } from '../Footer'
 
 interface SignupFormProps {
   onSwitchToLogin: () => void
@@ -67,12 +68,13 @@ export function SignupForm({ onSwitchToLogin, onSignupSuccess }: SignupFormProps
           },
         }}
       />
-      <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center p-4">
-        <div className="absolute top-4 right-4 z-20">
-          <ThemeToggle />
-        </div>
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex flex-col">
+        <div className="flex-1 flex items-center justify-center p-4 pt-20">
+          <div className="absolute top-4 right-4 z-20">
+            <ThemeToggle />
+          </div>
 
-        <div className="relative z-10 w-full max-w-md">
+          <div className="relative z-10 w-full max-w-md">
           <Card className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-sm">
             <CardHeader className="text-center">
               <div className="inline-flex items-center justify-center w-20 h-20 mb-4">
@@ -88,8 +90,8 @@ export function SignupForm({ onSwitchToLogin, onSignupSuccess }: SignupFormProps
 
             <CardContent>
               <form onSubmit={handleSignup} className="space-y-4" name="signup-form">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                <div>
+                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">
                     Full Name
                   </label>
                   <div className="relative">
@@ -108,8 +110,8 @@ export function SignupForm({ onSwitchToLogin, onSignupSuccess }: SignupFormProps
                   </div>
                 </div>
 
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                <div>
+                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">
                     Email
                   </label>
                   <div className="relative">
@@ -128,8 +130,8 @@ export function SignupForm({ onSwitchToLogin, onSignupSuccess }: SignupFormProps
                   </div>
                 </div>
 
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                <div>
+                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">
                     Password
                   </label>
                   <div className="relative">
@@ -155,8 +157,8 @@ export function SignupForm({ onSwitchToLogin, onSignupSuccess }: SignupFormProps
                   </div>
                 </div>
 
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                <div>
+                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">
                     Confirm Password
                   </label>
                   <div className="relative">
@@ -204,7 +206,7 @@ export function SignupForm({ onSwitchToLogin, onSignupSuccess }: SignupFormProps
                 </Button>
               </form>
 
-              <div className="mt-6 text-center py-2">
+              <div className="py-6 text-center">
                 <p className="text-sm text-slate-600 dark:text-slate-400">
                   Already have an account?{' '}
                   <button
@@ -214,10 +216,12 @@ export function SignupForm({ onSwitchToLogin, onSignupSuccess }: SignupFormProps
                     Sign in
                   </button>
                 </p>
-              </div>
-            </CardContent>
-          </Card>
+            </div>
+          </CardContent>
+        </Card>
+          </div>
         </div>
+        <Footer />
       </div>
     </>
   )

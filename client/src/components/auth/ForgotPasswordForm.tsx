@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui
 import { ArrowLeft, Mail, Lock, Eye, EyeOff } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { ThemeToggle } from '../../components/theme-toggle'
+import { Footer } from '../Footer'
 
 interface ForgotPasswordFormProps {
   onBackToLogin: () => void
@@ -87,15 +88,16 @@ export function ForgotPasswordForm({ onBackToLogin }: ForgotPasswordFormProps) {
 
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center p-4">
-      <div className="absolute top-4 right-4 z-20">
-        <ThemeToggle />
-      </div>
-      
-      <div className="relative z-10 w-full max-w-md">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex flex-col">
+      <div className="flex-1 flex items-center justify-center p-4 pt-20">
+        <div className="absolute top-4 right-4 z-20">
+          <ThemeToggle />
+        </div>
+        
+        <div className="relative z-10 w-full max-w-md">
         <Card className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-sm">
-          <CardHeader className={`text-center ${step === 'reset' ? 'pb-0' : 'pb-4'}`}>
-            <div className="w-20 h-20 flex items-center justify-center mx-auto mb-4">
+          <CardHeader className="text-center">
+            <div className="inline-flex items-center justify-center w-20 h-20 mb-4">
               <img src="/favicon.ico" alt="TaskMate Logo" className="w-12 h-12" />
             </div>
             <CardTitle className="text-2xl font-bold text-slate-900 dark:text-white">
@@ -109,11 +111,11 @@ export function ForgotPasswordForm({ onBackToLogin }: ForgotPasswordFormProps) {
             </CardDescription>
           </CardHeader>
 
-          <CardContent className="pt-0">
+          <CardContent>
             {step === 'email' ? (
               <form onSubmit={handleEmailCheck} className="space-y-4" name="forgot-password-form">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                <div>
+                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">
                     Email Address
                   </label>
                   <div className="relative">
@@ -138,37 +140,35 @@ export function ForgotPasswordForm({ onBackToLogin }: ForgotPasswordFormProps) {
                   </div>
                 )}
 
-                <div className="flex flex-col space-y-3">
-                  <Button
-                    type="submit"
-                    disabled={loading || !email.trim()}
-                    className="w-full h-12 bg-blue-500 hover:bg-blue-600 text-white font-semibold shadow-sm hover:shadow-md transition-all duration-200"
-                  >
-                    {loading ? (
-                      <div className="flex items-center space-x-2">
-                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                        <span>Processing...</span>
-                      </div>
-                    ) : (
-                      'Reset Password'
-                    )}
-                  </Button>
+                <Button
+                  type="submit"
+                  disabled={loading || !email.trim()}
+                  className="w-full h-12 bg-blue-500 hover:bg-blue-600 text-white font-semibold shadow-sm hover:shadow-md transition-all duration-200"
+                >
+                  {loading ? (
+                    <div className="flex items-center space-x-2">
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      <span>Processing...</span>
+                    </div>
+                  ) : (
+                    'Reset Password'
+                  )}
+                </Button>
 
-                  <Button
-                    type="button"
+                <div className="py-6 text-center">
+                  <button
                     onClick={onBackToLogin}
-                    variant="ghost"
-                    className="w-full h-12 text-slate-600 dark:text-slate-400 hover:text-slate-700 dark:hover:text-blue-400 hover:bg-transparent cursor-pointer"
+                    className="text-sm text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-blue-400 font-medium transition-colors cursor-pointer"
                   >
-                    <ArrowLeft className="w-4 h-4" />
+                    <ArrowLeft className="w-4 h-4 inline mr-1" />
                     Back to Sign In
-                  </Button>
+                  </button>
                 </div>
               </form>
             ) : (
               <form onSubmit={handlePasswordReset} className="space-y-4" name="reset-password-form">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                <div>
+                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">
                     New Password
                   </label>
                   <div className="relative">
@@ -194,8 +194,8 @@ export function ForgotPasswordForm({ onBackToLogin }: ForgotPasswordFormProps) {
                   </div>
                 </div>
 
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                <div>
+                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">
                     Confirm New Password
                   </label>
                   <div className="relative">
@@ -227,27 +227,27 @@ export function ForgotPasswordForm({ onBackToLogin }: ForgotPasswordFormProps) {
                   </div>
                 )}
 
-                <div className="flex flex-col space-y-3">
-                  <Button
-                    type="submit"
-                    disabled={loading || !newPassword.trim() || !confirmPassword.trim()}
-                    className="w-full h-12 bg-green-500 hover:bg-green-600 text-white font-semibold shadow-sm hover:shadow-md transition-all duration-200"
-                  >
-                    {loading ? (
-                      <div className="flex items-center space-x-2">
-                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                        <span>Processing...</span>
-                      </div>
-                    ) : (
-                      'Reset Password'
-                    )}
-                  </Button>
-                </div>
+                <Button
+                  type="submit"
+                  disabled={loading || !newPassword.trim() || !confirmPassword.trim()}
+                  className="w-full h-12 bg-green-500 hover:bg-green-600 text-white font-semibold shadow-sm hover:shadow-md transition-all duration-200 mb-6"
+                >
+                  {loading ? (
+                    <div className="flex items-center space-x-2">
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      <span>Processing...</span>
+                    </div>
+                  ) : (
+                    'Reset Password'
+                  )}
+                </Button>
               </form>
             )}
           </CardContent>
         </Card>
+        </div>
       </div>
+      <Footer />
     </div>
   )
 }
