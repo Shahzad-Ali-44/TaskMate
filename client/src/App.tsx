@@ -287,6 +287,7 @@ function AppContent() {
   const [tasks, setTasks] = useState<Task[]>([])
   const [newTask, setNewTask] = useState<string>('')
   const [loading, setLoading] = useState<boolean>(false)
+  const [dataLoaded, setDataLoaded] = useState<boolean>(false)
   const [showLogin, setShowLogin] = useState(true)
   const [showForgotPassword, setShowForgotPassword] = useState(false)
   const [activeId, setActiveId] = useState<string | null>(null)
@@ -311,11 +312,13 @@ function AppContent() {
 
   useEffect(() => {
     if (user) {
+      setDataLoaded(false)
       fetchTasks()
     } else {
       setTasks([])
       setShowLogin(true)
       setShowForgotPassword(false)
+      setDataLoaded(true)
     }
   }, [user])
 
@@ -337,6 +340,7 @@ function AppContent() {
       toast.error('Failed to fetch tasks')
     } finally {
       setLoading(false)
+      setDataLoaded(true)
     }
   }
 
@@ -528,7 +532,7 @@ function AppContent() {
   const completedCount = completedTasks.length
   const progressPercentage = totalCount > 0 ? (completedCount / totalCount) * 100 : 0
 
-  if (authLoading) {
+  if (authLoading || !dataLoaded) {
     return (
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center">
         <div className="text-center">
