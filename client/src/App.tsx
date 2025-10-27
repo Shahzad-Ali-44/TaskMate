@@ -585,7 +585,7 @@ function AppContent() {
           },
         }}
       />
-      <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-900 pt-5">
         <div className="container mx-auto px-4 py-4 max-w-7xl">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 space-y-4 sm:space-y-0 bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
             <div className="flex items-center space-x-4">
