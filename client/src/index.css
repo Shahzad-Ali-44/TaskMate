@@ -152,6 +152,26 @@ button, a, input {
     min-height: 44px;
     min-width: 44px;
   }
+  
+
+  [data-dragging="true"] {
+    transform: rotate(2deg) scale(1.02);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+  }
+  
+
+  .touch-manipulation {
+    touch-action: manipulation;
+  }
+  
+  
+  [data-sortable-id] {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
 }
 
 

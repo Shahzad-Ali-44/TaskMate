@@ -7,7 +7,7 @@ import { Button } from './components/ui/button'
 import { Input } from './components/ui/input'
 import { Card, CardContent, CardHeader, CardTitle } from './components/ui/card'
 import { Badge } from './components/ui/badge'
-import { CheckCircle2, Plus, Trash2, TrendingUp, Zap, LogOut, Circle, Play, Search, Star } from 'lucide-react'
+import { CheckCircle2, Plus, Trash2, TrendingUp, Zap, LogOut, Circle, Play, Search, Star, GripVertical } from 'lucide-react'
 import { ThemeToggle } from './components/theme-toggle'
 import { Footer } from './components/Footer'
 import { LoginForm } from './components/auth/LoginForm'
@@ -18,6 +18,8 @@ import {
   DndContext,
   DragOverlay,
   PointerSensor,
+  TouchSensor,
+  KeyboardSensor,
   useSensor,
   useSensors,
   useDroppable,
@@ -112,13 +114,22 @@ function SortableTaskItem({ task, onToggle, onDelete, overId, activeId, allTasks
       <div
         ref={setNodeRef}
         style={style}
-        {...attributes}
-        {...listeners}
-        className={`bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 ${getStatusColor()} border-l-4 rounded-lg p-4 mb-3 cursor-grab active:cursor-grabbing select-none transition-all duration-200 hover:shadow-sm active:scale-[0.98] ${
-          isDragging ? 'opacity-50' : ''
+        className={`bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 ${getStatusColor()} border-l-4 rounded-lg p-4 mb-3 select-none transition-all duration-200 hover:shadow-sm active:scale-[0.98] ${
+          isDragging ? 'opacity-50 shadow-lg scale-105' : ''
         }`}
       >
         <div className="flex items-center space-x-3">
+       
+        <div
+          {...attributes}
+          {...listeners}
+          className="flex-shrink-0 p-1 cursor-grab active:cursor-grabbing touch-manipulation hover:bg-slate-100 dark:hover:bg-slate-700 rounded transition-colors duration-200"
+          style={{ touchAction: 'none' }}
+          title="Drag to reorder or move task"
+        >
+          <GripVertical className="w-4 h-4 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 transition-colors duration-200" />
+        </div>
+
         <Button
           variant="ghost"
           size="sm"
@@ -249,7 +260,7 @@ function TaskColumn({
         </div>
       </CardHeader>
       <CardContent className="pt-4 pb-4 px-4">
-        <div className="h-[300px] overflow-y-auto pr-2">
+          <div className="h-[300px] overflow-y-auto pr-2">
           {tasks.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-12 text-slate-400 dark:text-slate-500">
               {status === 'pending' && <Circle className="w-12 h-12 mb-3 opacity-20" />}
@@ -258,6 +269,11 @@ function TaskColumn({
               <p className="text-sm font-medium">
                 {isOver ? 'Drop task here' : 'No tasks yet'}
               </p>
+              {tasks.length === 0 && (
+                <p className="text-xs text-slate-400 dark:text-slate-500 mt-2 text-center px-4">
+                  Long press and drag the grip icon to move tasks between columns
+                </p>
+              )}
             </div>
           ) : (
             <div className="pr-2">
@@ -307,7 +323,14 @@ function AppContent() {
       activationConstraint: {
         distance: 8,
       },
-    })
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 250,
+        tolerance: 8,
+      },
+    }),
+    useSensor(KeyboardSensor)
   )
 
   useEffect(() => {
