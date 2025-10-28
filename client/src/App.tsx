@@ -622,7 +622,7 @@ function AppContent() {
                 </p>
               </div>
             </div>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 ml-auto sm:ml-0">
               <Button
                 variant="ghost"
                 size="sm"

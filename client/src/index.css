@@ -143,6 +143,7 @@ button:focus-visible {
   outline-offset: 2px;
 }
 
+
 button, a, input {
   transition: all 0.2s ease;
 }
