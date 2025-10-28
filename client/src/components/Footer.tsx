@@ -29,19 +29,16 @@ export function Footer() {
              </h4>
              <div className="space-y-3 text-sm text-slate-700 dark:text-slate-400">
                <div className="flex items-center space-x-3 group">
-                 <div className="w-1.5 h-1.5 bg-blue-500 rounded-full group-hover:scale-125 transition-transform duration-200"></div>
+                
                  <p className="group-hover:text-slate-900 dark:group-hover:text-white transition-colors duration-200">Drag & Drop Interface</p>
                </div>
                <div className="flex items-center space-x-3 group">
-                 <div className="w-1.5 h-1.5 bg-green-500 rounded-full group-hover:scale-125 transition-transform duration-200"></div>
                  <p className="group-hover:text-slate-900 dark:group-hover:text-white transition-colors duration-200">Real-time Progress Tracking</p>
                </div>
                <div className="flex items-center space-x-3 group">
-                 <div className="w-1.5 h-1.5 bg-yellow-500 rounded-full group-hover:scale-125 transition-transform duration-200"></div>
                  <p className="group-hover:text-slate-900 dark:group-hover:text-white transition-colors duration-200">Priority Management</p>
                </div>
                <div className="flex items-center space-x-3 group">
-                 <div className="w-1.5 h-1.5 bg-purple-500 rounded-full group-hover:scale-125 transition-transform duration-200"></div>
                  <p className="group-hover:text-slate-900 dark:group-hover:text-white transition-colors duration-200">Dark/Light Mode</p>
                </div>
              </div>
